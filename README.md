@@ -12,6 +12,7 @@ A programming language that can be run either with an interpreter or compiled.
 - Indexes start from 0
 - Defined variables cannot change data-type
 - Variables have a global/local scope (when defined in a function or loop they are local)
+- When passing values into a function they can either be passed by reference or value, however some data-types must be passed by reference for example arrays
 
 ### Lang Info
 A "lang info" file can be included in each project which defines certain parameters for the compiler/interpreter.
@@ -129,6 +130,50 @@ Return a variable from a function.
 
 Call a defined function with or without parameters, also storing a functions returned value into a variable.
 
+### Arguments/Parameters
+When using functions with parameters there are certain "features" that have to be used.
+
+#### Defining
+Arguments must have a expected data-type to receive. As well as data-types you can decide whether to pass the values by reference or value, _some data-types however must be passed by reference_.
+
+This example shows a function expected a string and a integer passed by value.
+
+```
+FN my_func(STRING name, INT age)
+    ...
+```
+
+This example shows a function expecting a string passed by value and a integer passed by reference.
+
+```
+FN my_func_two(STRING name, REF INT age)
+    ...
+```
+
+#### Calling
+When we call functions we must first know what data-types they are expecting and whether they should be passed by value or reference.
+
+This example shows passing a string and integer into a function by value.
+
+```
+VAR name STRING = "Leo"
+VAR age INTEGER = 19
+CALL my_func(name, age)
+```
+
+This example shows passing a string by value and a integer by reference.
+
+```
+VAR name STRING = "Leo"
+VAR age INTEGER = 19
+CALL my_func_two(name, REF age)
+```
+
+### FREE
+`FREE <Variable Name>`
+
+Remove a defined variable from memory when not it's not going to be used anymore.
+
 ### USE
 `USE <Import Path>`
 
@@ -148,6 +193,20 @@ COMMENT
 ```
 
 Add a comment, language allows for single line comments and multi-line using indentation.
+
+### Data-Types
+There are several data-types that can be used.
+
+#### Types
+- STRING, STR
+- BOOLEAN, BOOL
+- INTEGER, INT
+- FLOAT
+- ARRAY
+
+#### Indexed Types
+- STRING
+- ARRAY
 
 ## Examples
 
