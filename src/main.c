@@ -28,7 +28,11 @@ void compile_mode(char *src_path, char *dest_path) {
   Char_Slice curr_line;
 
   while ((read = getline(&line, &len, fp)) != -1) {
+    // we don't want a newline character
+    trim_newline(line);
+    // slice each whitespace character
     curr_line = split_line(line, SPACE);
+    // find the matching operator
     Operators op = char_to_operator(curr_line.array[0]);
     switch (op) {
     case VAR:
@@ -36,6 +40,10 @@ void compile_mode(char *src_path, char *dest_path) {
       break;
     case OUT:
       write_out(fp_dest, curr_line);
+      break;
+    default:
+      fprintf(stderr, "unhandled operator");
+      exit(EXIT_FAILURE);
       break;
     }
     free(curr_line.array);

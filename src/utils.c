@@ -24,3 +24,13 @@ void output_char_slices(Char_Slice *char_slices) {
     printf("%s\n", char_slices->array[i]);
   }
 }
+void trim_newline(char *src) {
+  int last_index = strlen(src) - 1;
+  // make sure src string has minimum length
+  if (last_index >= 0) {
+    if (src[last_index] == '\n') {
+      // make the newline character null
+      src[last_index] = '\0';
+    }
+  }
+}

@@ -6,4 +6,5 @@ typedef struct {
 } Char_Slice;
 Char_Slice split_line(char *line, char *sep);
 void output_char_slices(Char_Slice *char_slices);
+void trim_newline(char *src);
 #endif
