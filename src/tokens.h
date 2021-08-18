@@ -21,6 +21,12 @@ typedef enum {
   STRING,
   INTEGER,
 } Data_Types;
+typedef enum {
+  STDOUT,
+  STDERR,
+  STDIN,
+} Std_Streams;
 Operators char_to_operator(char *operator_char);
 Data_Types char_to_data_type(char *src);
+Std_Streams char_to_std_stream(char *src);
 #endif

@@ -50,3 +50,16 @@ Data_Types char_to_data_type(char *src) {
     exit(EXIT_FAILURE);
   }
 }
+
+Std_Streams char_to_std_stream(char *src) {
+  if (strcmp(src, "STDOUT") == 0) {
+    return STDOUT;
+  } else if (strcmp(src, "STDERR") == 0) {
+    return STDERR;
+  } else if (strcmp(src, "STDIN") == 0) {
+    return STDIN;
+  } else {
+    fprintf(stderr, "unknown std stream type %s", src);
+    exit(EXIT_FAILURE);
+  }
+}

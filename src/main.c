@@ -23,6 +23,7 @@ void compile_mode(char *src_path, char *dest_path) {
   fp_dest = fopen(dest_path, "w");
 
   fprintf(fp_dest, "#include <stdio.h>\n");
+  fprintf(fp_dest, "#include <stdlib.h>\n");
   fprintf(fp_dest, "int main(){");
 
   Char_Slice curr_line;
@@ -40,6 +41,9 @@ void compile_mode(char *src_path, char *dest_path) {
       break;
     case OUT:
       write_out(fp_dest, curr_line);
+      break;
+    case EXIT:
+      write_exit(fp_dest, curr_line);
       break;
     default:
       fprintf(stderr, "unhandled operator");

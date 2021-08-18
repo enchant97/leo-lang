@@ -45,5 +45,34 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
 
 void write_out(FILE *fp, Char_Slice curr_line) {
   char *variable_name = curr_line.array[2];
-  fprintf(fp, "printf(\"%%s\", %s);", variable_name);
+  Std_Streams stream_type = char_to_std_stream(curr_line.array[1]);
+  switch (stream_type) {
+  case STDOUT:
+    fprintf(fp, "printf(\"%%s\", %s);", variable_name);
+    break;
+  case STDERR:
+    fprintf(fp, "fprintf(stderr, \"%%s\", %s);", variable_name);
+    break;
+  default:
+    fprintf(stderr, "unhandled std stream type %s", curr_line.array[1]);
+    exit(EXIT_FAILURE);
+  }
+}
+
+void write_exit(FILE *fp, Char_Slice curr_line) {
+  char *exit_code = "0";
+  if (curr_line.rows > 2) {
+    fprintf(stderr, "invalid exit command");
+    exit(EXIT_FAILURE);
+  } else if (curr_line.rows == 2) {
+    exit_code = curr_line.array[1];
+    // validate that exit code is between 0-255 (and is a integer)
+    int exit_code_int = strtol(exit_code, NULL, 10);
+    if ((exit_code_int < 1 && strcmp(exit_code, "0") != 0) ||
+        exit_code_int > 255) {
+      fprintf(stderr, "invalid exit code integer, must be between 0-255");
+      exit(EXIT_FAILURE);
+    }
+  }
+  fprintf(fp, "exit(%s);", exit_code);
 }
