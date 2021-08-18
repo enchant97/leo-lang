@@ -24,6 +24,27 @@ void output_char_slices(Char_Slice *char_slices) {
     printf("%s\n", char_slices->array[i]);
   }
 }
+
+char *combine_sliced(Char_Slice sliced, int start_i, int end_i, char *sep) {
+  char *combined = NULL;
+  for (int i = start_i; i < (end_i + 1); i++) {
+    char *curr_row = sliced.array[i];
+    // allocate enough space for current row
+    size_t new_size = sizeof(combined) + sizeof(curr_row) + sizeof(sep);
+    combined = realloc(combined, new_size);
+    if (combined == NULL) {
+      fprintf(stderr, "memory allocation error");
+      exit(EXIT_FAILURE);
+    }
+    if (i != start_i) {
+      // we don't want a seperator on the first element
+      combined = strcat(combined, sep);
+    }
+    combined = strcat(combined, curr_row);
+  }
+  return combined;
+}
+
 void trim_newline(char *src) {
   int last_index = strlen(src) - 1;
   // make sure src string has minimum length

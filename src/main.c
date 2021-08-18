@@ -20,7 +20,7 @@ void compile_mode(char *src_path, char *dest_path) {
   }
 
   FILE *fp_dest;
-  fp_dest = fopen(dest_path, "a");
+  fp_dest = fopen(dest_path, "w");
 
   fprintf(fp_dest, "#include <stdio.h>\n");
   fprintf(fp_dest, "int main(){");
