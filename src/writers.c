@@ -1,6 +1,7 @@
 #include "writers.h"
 #include "tokens.h"
 #include "utils.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,11 +9,16 @@
 void write_variable(FILE *fp, Char_Slice curr_line) {
   char *variable_name = curr_line.array[1];
   char *data_type = curr_line.array[2];
-  char *default_value = NULL;
+  char *default_value;
+  bool has_default = false;
+
+  // check if variable has default
   if (curr_line.rows >= 5) {
-    default_value = curr_line.array[4];
-  } else {
-    default_value = "NULL";
+    if (strcmp(curr_line.array[3], "=") != 0) {
+      fprintf(stderr, "invalid sign %s", curr_line.array[3]);
+      exit(EXIT_FAILURE);
+    }
+    has_default = true;
   }
 
   // check for valid known data-types
@@ -20,7 +26,8 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
 
   // handle each data-type differently
   if (enum_data_type == STRING) {
-    if (strcmp(default_value, "NULL") == 0) {
+    if (!has_default) {
+      default_value = "NULL";
       fprintf(fp, "char* %s = %s;", variable_name, default_value);
     } else {
       // check for quotes at start and end
@@ -36,6 +43,7 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
       free(default_value);
     }
   } else if (enum_data_type == INTEGER) {
+    default_value = curr_line.array[4];
     fprintf(fp, "int %s = %s;", variable_name, default_value);
   } else {
     fprintf(stderr, "unhandled data-type %s", data_type);

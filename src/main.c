@@ -31,6 +31,10 @@ void compile_mode(char *src_path, char *dest_path) {
   while ((read = getline(&line, &len, fp)) != -1) {
     // we don't want a newline character
     trim_newline(line);
+    if (strcmp(line, "") == 0) {
+      // skip blank lines
+      continue;
+    }
     // slice each whitespace character
     curr_line = split_line(line, SPACE);
     // find the matching operator
