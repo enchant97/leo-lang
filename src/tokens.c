@@ -39,3 +39,14 @@ Operators char_to_operator(char *operator_char) {
     exit(EXIT_FAILURE);
   }
 }
+
+Data_Types char_to_data_type(char *src) {
+  if (strcmp(src, "STRING") == 0) {
+    return STRING;
+  } else if (strcmp(src, "INTEGER") == 0) {
+    return INTEGER;
+  } else {
+    fprintf(stderr, "unknown data-type %s", src);
+    exit(EXIT_FAILURE);
+  }
+}

@@ -1,6 +1,8 @@
 #include "writers.h"
+#include "tokens.h"
 #include "utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 void write_variable(FILE *fp, Char_Slice curr_line) {
@@ -12,10 +14,20 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
   } else {
     default_value = "NULL";
   }
-  if (strcmp(data_type, "STRING") == 0) {
-    fprintf(fp, "char* ");
+
+  // check for valid known data-types
+  Data_Types enum_data_type = char_to_data_type(data_type);
+
+  // handle each data-type differently
+  if (enum_data_type == STRING) {
+    // TODO extract string quotes from array
+    fprintf(fp, "char* %s = %s;", variable_name, default_value);
+  } else if (enum_data_type == INTEGER) {
+    fprintf(fp, "int %s = %s;", variable_name, default_value);
+  } else {
+    fprintf(stderr, "unhandled data-type %s", data_type);
+    exit(EXIT_FAILURE);
   }
-  fprintf(fp, "%s = %s;", variable_name, default_value);
 }
 
 void write_out(FILE *fp, Char_Slice curr_line) {
