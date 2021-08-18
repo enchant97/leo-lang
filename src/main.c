@@ -27,6 +27,7 @@ void compile_mode(char *src_path, char *dest_path) {
   fprintf(fp_dest, "int main(){");
 
   Char_Slice curr_line;
+  Status_Info curr_status;
 
   while ((read = getline(&line, &len, fp)) != -1) {
     // we don't want a newline character
@@ -40,19 +41,29 @@ void compile_mode(char *src_path, char *dest_path) {
     // find the matching operator
     Operators op = char_to_operator(curr_line.array[0]);
     switch (op) {
+    case UNKNOWN:
+      curr_status = (Status_Info){true, "unknown operator"};
+      break;
     case VAR:
-      write_variable(fp_dest, curr_line);
+      curr_status = write_variable(fp_dest, curr_line);
       break;
     case OUT:
-      write_out(fp_dest, curr_line);
+      curr_status = write_out(fp_dest, curr_line);
       break;
     case EXIT:
-      write_exit(fp_dest, curr_line);
+      curr_status = write_exit(fp_dest, curr_line);
       break;
     default:
-      fprintf(stderr, "unhandled operator");
-      exit(EXIT_FAILURE);
+      curr_status = (Status_Info){true, "unhandled operator"};
       break;
+    }
+    if (curr_status.has_error) {
+      // handle errors
+      fprintf(stderr, "compile error:\n");
+      fprintf(stderr, "\t'%s'\n",
+              combine_sliced(curr_line, 0, curr_line.rows - 1, " "));
+      fprintf(stderr, "\t%s", curr_status.message);
+      exit(EXIT_FAILURE);
     }
     free(curr_line.array);
   }

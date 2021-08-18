@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void write_variable(FILE *fp, Char_Slice curr_line) {
+Status_Info write_variable(FILE *fp, Char_Slice curr_line) {
   char *variable_name = curr_line.array[1];
   char *data_type = curr_line.array[2];
   char *default_value;
@@ -15,8 +15,7 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
   // check if variable has default
   if (curr_line.rows >= 5) {
     if (strcmp(curr_line.array[3], "=") != 0) {
-      fprintf(stderr, "invalid sign %s", curr_line.array[3]);
-      exit(EXIT_FAILURE);
+      return (Status_Info){true, "invalid sign"};
     }
     has_default = true;
   }
@@ -35,8 +34,8 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
       if (strcmp(&curr_line.array[4][0], "\"") != 0 &&
           strcmp(&curr_line.array[end_i][strlen(curr_line.array[end_i]) - 1],
                  "\"") != 0) {
-        fprintf(stderr, "missing double quotes around defined string");
-        exit(EXIT_FAILURE);
+        return (Status_Info){true,
+                             "missing double quotes around defined string"};
       }
       default_value = combine_sliced(curr_line, 4, end_i, " ");
       fprintf(fp, "char* %s = %s;", variable_name, default_value);
@@ -46,12 +45,12 @@ void write_variable(FILE *fp, Char_Slice curr_line) {
     default_value = curr_line.array[4];
     fprintf(fp, "int %s = %s;", variable_name, default_value);
   } else {
-    fprintf(stderr, "unhandled data-type %s", data_type);
-    exit(EXIT_FAILURE);
+    return (Status_Info){true, "unhandled data-type %s"};
   }
+  return (Status_Info){false};
 }
 
-void write_out(FILE *fp, Char_Slice curr_line) {
+Status_Info write_out(FILE *fp, Char_Slice curr_line) {
   Std_Streams stream_type = char_to_std_stream(curr_line.array[1]);
   char *print_content;
   if (strncmp(curr_line.array[2], "\"", 1) == 0) {
@@ -59,15 +58,13 @@ void write_out(FILE *fp, Char_Slice curr_line) {
     int end_i = curr_line.rows - 1;
     if (strcmp(&curr_line.array[end_i][strlen(curr_line.array[end_i]) - 1],
                "\"") != 0) {
-      fprintf(stderr, "missing double quotes around defined string");
-      exit(EXIT_FAILURE);
+      return (Status_Info){true, "missing double quotes around defined string"};
     }
     print_content = combine_sliced(curr_line, 2, end_i, " ");
   } else {
     // print from a variable
     if (curr_line.rows > 3) {
-      fprintf(stderr, "invalid OUT command");
-      exit(EXIT_FAILURE);
+      return (Status_Info){true, "invalid OUT command"};
     }
     print_content = curr_line.array[2];
   }
@@ -79,25 +76,25 @@ void write_out(FILE *fp, Char_Slice curr_line) {
     fprintf(fp, "fprintf(stderr, \"%%s\", %s);", print_content);
     break;
   default:
-    fprintf(stderr, "unhandled std stream type %s", curr_line.array[1]);
-    exit(EXIT_FAILURE);
+    return (Status_Info){true, "unhandled std stream type"};
   }
+  return (Status_Info){false};
 }
 
-void write_exit(FILE *fp, Char_Slice curr_line) {
+Status_Info write_exit(FILE *fp, Char_Slice curr_line) {
   char *exit_code = "0";
   if (curr_line.rows > 2) {
-    fprintf(stderr, "invalid exit command");
-    exit(EXIT_FAILURE);
+    return (Status_Info){true, "invalid exit command"};
   } else if (curr_line.rows == 2) {
     exit_code = curr_line.array[1];
     // validate that exit code is between 0-255 (and is a integer)
     int exit_code_int = strtol(exit_code, NULL, 10);
     if ((exit_code_int < 1 && strcmp(exit_code, "0") != 0) ||
         exit_code_int > 255) {
-      fprintf(stderr, "invalid exit code integer, must be between 0-255");
-      exit(EXIT_FAILURE);
+      return (Status_Info){true,
+                           "invalid exit code integer, must be between 0-255"};
     }
   }
   fprintf(fp, "exit(%s);", exit_code);
+  return (Status_Info){false};
 }

@@ -35,8 +35,7 @@ Operators char_to_operator(char *operator_char) {
   } else if (strcmp(operator_char, "COMMENT") == 0) {
     return COMMENT;
   } else {
-    fprintf(stderr, "unknown operator %s", operator_char);
-    exit(EXIT_FAILURE);
+    return UNKNOWN;
   }
 }
 
