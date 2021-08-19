@@ -28,8 +28,10 @@ void compile_mode(char *src_path, char *dest_path) {
 
   Char_Slice curr_line;
   Status_Info curr_status;
+  int curr_line_number = 0;
 
   while ((read = getline(&line, &len, fp)) != -1) {
+    curr_line_number++;
     // we don't want a newline character
     trim_newline(line);
     if (strcmp(line, "") == 0) {
@@ -58,11 +60,8 @@ void compile_mode(char *src_path, char *dest_path) {
       break;
     }
     if (curr_status.has_error) {
-      // handle errors
-      fprintf(stderr, "compile error:\n");
-      fprintf(stderr, "\t'%s'\n",
-              combine_sliced(curr_line, 0, curr_line.rows - 1, " "));
-      fprintf(stderr, "\t%s", curr_status.message);
+      output_compile_error_msg(curr_line, curr_status, curr_line_number);
+      remove(dest_path);
       exit(EXIT_FAILURE);
     }
     free(curr_line.array);

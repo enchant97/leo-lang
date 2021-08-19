@@ -55,3 +55,12 @@ void trim_newline(char *src) {
     }
   }
 }
+
+void output_compile_error_msg(Char_Slice curr_line, Status_Info curr_status,
+                              int curr_line_number) {
+  char *combined_line = combine_sliced(curr_line, 0, curr_line.rows - 1, " ");
+  fprintf(stderr, "compile error:\n");
+  fprintf(stderr, "\t%s\n", curr_status.message);
+  fprintf(stderr, "current line (%d):\n", curr_line_number);
+  fprintf(stderr, "\t'%s'\n", combined_line);
+}
