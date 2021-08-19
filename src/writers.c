@@ -44,8 +44,10 @@ Status_Info write_variable(FILE *fp, Char_Slice curr_line) {
   } else if (enum_data_type == INTEGER) {
     default_value = curr_line.array[4];
     fprintf(fp, "int %s = %s;", variable_name, default_value);
+  } else if (enum_data_type == UNKNOWN_DT) {
+    return (Status_Info){true, "unknown data-type"};
   } else {
-    return (Status_Info){true, "unhandled data-type %s"};
+    return (Status_Info){true, "unhandled data-type"};
   }
   return (Status_Info){false};
 }
@@ -75,6 +77,8 @@ Status_Info write_out(FILE *fp, Char_Slice curr_line) {
   case STDERR:
     fprintf(fp, "fprintf(stderr, \"%%s\", %s);", print_content);
     break;
+  case UNKNOWN_SS:
+    return (Status_Info){true, "unknown std stream type"};
   default:
     return (Status_Info){true, "unhandled std stream type"};
   }

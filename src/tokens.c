@@ -35,7 +35,7 @@ Operators char_to_operator(char *operator_char) {
   } else if (strcmp(operator_char, "COMMENT") == 0) {
     return COMMENT;
   } else {
-    return UNKNOWN;
+    return UNKNOWN_OP;
   }
 }
 
@@ -45,8 +45,7 @@ Data_Types char_to_data_type(char *src) {
   } else if (strcmp(src, "INTEGER") == 0) {
     return INTEGER;
   } else {
-    fprintf(stderr, "unknown data-type %s", src);
-    exit(EXIT_FAILURE);
+    return UNKNOWN_DT;
   }
 }
 
@@ -58,7 +57,6 @@ Std_Streams char_to_std_stream(char *src) {
   } else if (strcmp(src, "STDIN") == 0) {
     return STDIN;
   } else {
-    fprintf(stderr, "unknown std stream type %s", src);
-    exit(EXIT_FAILURE);
+    return UNKNOWN_SS;
   }
 }

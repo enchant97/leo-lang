@@ -1,7 +1,7 @@
 #ifndef TOKENS_H_
 #define TOKENS_H_
 typedef enum {
-  UNKNOWN,
+  UNKNOWN_OP,
   IN,
   OUT,
   VAR,
@@ -19,10 +19,12 @@ typedef enum {
   COMMENT
 } Operators;
 typedef enum {
+  UNKNOWN_DT,
   STRING,
   INTEGER,
 } Data_Types;
 typedef enum {
+  UNKNOWN_SS,
   STDOUT,
   STDERR,
   STDIN,

@@ -41,7 +41,7 @@ void compile_mode(char *src_path, char *dest_path) {
     // find the matching operator
     Operators op = char_to_operator(curr_line.array[0]);
     switch (op) {
-    case UNKNOWN:
+    case UNKNOWN_OP:
       curr_status = (Status_Info){true, "unknown operator"};
       break;
     case VAR:
