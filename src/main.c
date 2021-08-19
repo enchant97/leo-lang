@@ -49,6 +49,9 @@ void compile_mode(char *src_path, char *dest_path) {
     case VAR:
       curr_status = write_variable(fp_dest, curr_line);
       break;
+    case SET:
+      curr_status = write_set(fp_dest, curr_line);
+      break;
     case OUT:
       curr_status = write_out(fp_dest, curr_line);
       break;

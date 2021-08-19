@@ -52,6 +52,24 @@ Status_Info write_variable(FILE *fp, Char_Slice curr_line) {
   return (Status_Info){false};
 }
 
+Status_Info write_set(FILE *fp, Char_Slice curr_line) {
+  // TODO check for if variable exists
+  // TODO check data-types
+  // checks if SET command is valid
+  if (curr_line.rows < 4) {
+    return (Status_Info){true, "invalid SET"};
+  } else if (strcmp(curr_line.array[2], "=") != 0) {
+    return (Status_Info){true, "invalid sign"};
+  }
+
+  char *variable_name = curr_line.array[1];
+  char *new_value = combine_sliced(curr_line, 3, curr_line.rows - 1, " ");
+
+  fprintf(fp, "%s = %s;", variable_name, new_value);
+
+  return (Status_Info){false};
+}
+
 Status_Info write_out(FILE *fp, Char_Slice curr_line) {
   Std_Streams stream_type = char_to_std_stream(curr_line.array[1]);
   char *print_content;
