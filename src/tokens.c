@@ -28,6 +28,8 @@ Operators char_to_operator(char *operator_char) {
     return RETURN;
   } else if (strcmp(operator_char, "CALL") == 0) {
     return CALL;
+  } else if (strcmp(operator_char, "FREE") == 0) {
+    return FREE;
   } else if (strcmp(operator_char, "USE") == 0) {
     return USE;
   } else if (strcmp(operator_char, "EXIT") == 0) {

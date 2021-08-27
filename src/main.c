@@ -24,6 +24,7 @@ void compile_mode(char *src_path, char *dest_path) {
 
   fprintf(fp_dest, "#include <stdio.h>\n");
   fprintf(fp_dest, "#include <stdlib.h>\n");
+  fprintf(fp_dest, "#include <inbuilt.h>\n");
   fprintf(fp_dest, "int main(){");
 
   Char_Slice curr_line;
@@ -54,6 +55,12 @@ void compile_mode(char *src_path, char *dest_path) {
       break;
     case OUT:
       curr_status = write_out(fp_dest, curr_line);
+      break;
+    case IN:
+      curr_status = write_in(fp_dest, curr_line);
+      break;
+    case FREE:
+      curr_status = write_free(fp_dest, curr_line);
       break;
     case EXIT:
       curr_status = write_exit(fp_dest, curr_line);

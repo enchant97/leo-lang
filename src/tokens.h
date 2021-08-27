@@ -14,6 +14,7 @@ typedef enum {
   FN,
   RETURN,
   CALL,
+  FREE,
   USE,
   EXIT,
   COMMENT

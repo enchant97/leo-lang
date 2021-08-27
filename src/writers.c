@@ -103,6 +103,38 @@ Status_Info write_out(FILE *fp, Char_Slice curr_line) {
   return (Status_Info){false};
 }
 
+Status_Info write_in(FILE *fp, Char_Slice curr_line) {
+  if (curr_line.rows != 3) {
+    return (Status_Info){true, "invalid IN"};
+  }
+  Std_Streams stream_type = char_to_std_stream(curr_line.array[1]);
+  // TODO check for if variable exists
+  // TODO check data-types
+  char *variable_name = curr_line.array[2];
+
+  switch (stream_type) {
+  case STDIN:
+    fprintf(fp, "%s = read_stdin_line();", variable_name);
+    break;
+  case UNKNOWN_SS:
+    return (Status_Info){true, "unknown input type"};
+  default:
+    return (Status_Info){true, "unhandled input type"};
+  }
+  return (Status_Info){false};
+}
+
+Status_Info write_free(FILE *fp, Char_Slice curr_line) {
+  if (curr_line.rows != 2) {
+  return (Status_Info){true, "invalid FREE"};
+  }
+  // TODO check for if variable exists
+  // TODO check if variable needs to be freed
+  char *variable_name = curr_line.array[1];
+
+  fprintf(fp, "free(%s);", variable_name);
+}
+
 Status_Info write_exit(FILE *fp, Char_Slice curr_line) {
   char *exit_code = "0";
   if (curr_line.rows > 2) {

@@ -17,6 +17,21 @@ A programming language that can be run either with an interpreter or compiled.
 ### Lang Info
 A "lang info" file can be included in each project which defines certain parameters for the compiler/interpreter.
 
+## Usage
+When the leo-lang compiler has been compiled. You can give it the following command `compile example.leo example.c`, this will compile into a C file.
+
+Then when compiling the C file you will need to add the -I option to include the "library_c" directory so that the header files will be found.
+
+> Program usage is very still a WIP, and will be better in the future.
+
+### Example
+
+```
+$ make
+$ ./build/leo-lang.out compile example.leo example.c
+$ gcc example.c library_c/inbuilt.c -I library_c/ -o main.o
+```
+
 ## Syntax
 
 ### Input
