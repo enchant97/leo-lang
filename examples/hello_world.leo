@@ -1,0 +1,1 @@
+OUT STDOUT "Hello World!"

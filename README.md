@@ -13,6 +13,9 @@ A programming language that can be run either with an interpreter or compiled.
 - Defined variables cannot change data-type
 - Variables have a global/local scope (when defined in a function or loop they are local)
 - When passing values into a function they can either be passed by reference or value, however some data-types must be passed by reference for example arrays
+- Dynamically allocated memory must be freed manually
+    - The "IN" command produces dynamic allocated memory
+- You cannot define a function inside of another function
 
 ### Lang Info
 A "lang info" file can be included in each project which defines certain parameters for the compiler/interpreter.
@@ -31,6 +34,9 @@ $ make
 $ ./build/leo-lang.out compile example.leo example.c
 $ gcc example.c library_c/inbuilt.c -I library_c/ -o main.o
 ```
+
+## Code Examples
+Code examples can be found in the examples directory.
 
 ## Syntax
 
@@ -66,7 +72,7 @@ Declare a variable, with or without a default.
 Give a variable a new value
 
 ### CALC
-`CALC (<Variable A> <Operation> <Variable B>) INTO <Variable C>`
+`CALC <Variable C> = (<Variable A> <Operation> <Variable B>)`
 
 Calculate an operation between A and B and store it result in a variable C.
 
@@ -253,7 +259,7 @@ CALL std::Print("Hello World!")
 ```
 FN add_together(INT a, INT b) INT
     VAR c INT
-    CALC (a + b) INTO c
+    CALC c = (a + b)
     RETURN c
 ```
 
