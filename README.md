@@ -51,8 +51,6 @@ Inputs are given as a STRING data-type.
 ### Output
 `OUT <Output Source> <Variable Name>`
 
-`OUT <Output Source> (<Variable Name>, ...)`
-
 Output to the terminal with either a single variable or multiple.
 
 #### Output Sources
@@ -72,7 +70,7 @@ Declare a variable, with or without a default.
 Give a variable a new value
 
 ### CALC
-`CALC <Variable C> = (<Variable A> <Operation> <Variable B>)`
+`CALC <Variable C> = <Variable A> <Operation> <Variable B>`
 
 Calculate an operation between A and B and store it result in a variable C.
 
@@ -230,17 +228,6 @@ There are several data-types that can be used.
 - ARRAY
 
 ## Examples
-
-### Hello World
-`OUT STDOUT "Hello World"`
-
-### Asking For Users Name
-```
-VAR name STRING
-OUT STDOUT "What is your name? "
-IN STDIN name
-OUT STDOUT ("Your name is", name)
-```
 
 ### Count From 0 To 10
 ```
