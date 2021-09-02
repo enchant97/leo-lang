@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,6 +24,40 @@ void output_char_slices(Char_Slice *char_slices) {
   for (int i = 0; i < char_slices->rows; i++) {
     printf("%s\n", char_slices->array[i]);
   }
+}
+
+int find_string_end_quote(char *src, int start_i) {
+  // quote should be included in src
+  char quote_char = src[start_i];
+  start_i++;
+  int src_len = strlen(src);
+  bool skip = false;
+  for (int i = start_i; i < src_len; i++) {
+    if (skip) {
+      skip = false;
+    } else {
+      if (src[i] == quote_char) {
+        return i;
+      } else if (src[i] == '\\') {
+        skip = true;
+      }
+    }
+  }
+  return -1;
+}
+
+int calculate_substring_length(int start_i, int end_i) {
+  return (end_i - start_i) + 1;
+}
+
+void substring(char *src, char *dst, int start_i, int length) {
+  int dst_i = 0;
+
+  while (dst_i < length) {
+    dst[dst_i] = src[start_i + dst_i];
+    dst_i++;
+  }
+  dst[dst_i] = '\0';
 }
 
 char *combine_sliced(Char_Slice sliced, int start_i, int end_i, char *sep) {
