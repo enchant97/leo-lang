@@ -126,13 +126,14 @@ Status_Info write_in(FILE *fp, Char_Slice curr_line) {
 
 Status_Info write_free(FILE *fp, Char_Slice curr_line) {
   if (curr_line.rows != 2) {
-  return (Status_Info){true, "invalid FREE"};
+    return (Status_Info){true, "invalid FREE"};
   }
   // TODO check for if variable exists
   // TODO check if variable needs to be freed
   char *variable_name = curr_line.array[1];
 
   fprintf(fp, "free(%s);", variable_name);
+  return (Status_Info){false};
 }
 
 Status_Info write_exit(FILE *fp, Char_Slice curr_line) {
