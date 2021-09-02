@@ -124,6 +124,22 @@ Status_Info write_in(FILE *fp, Char_Slice curr_line) {
   return (Status_Info){false};
 }
 
+Status_Info write_calc(FILE *fp, Char_Slice curr_line) {
+  if (curr_line.rows != 6) {
+    return (Status_Info){true, "invalid CALC"};
+  }
+  // TODO more syntax checks
+  // TODO check if variable exists and what data-type
+  char operator= curr_line.array[4][0];
+  if (operator== '+' || operator== '-' || operator== '/' || operator== '*') {
+    fprintf(fp, "%s = %s %c %s;", curr_line.array[1],
+            curr_line.array[3], operator, curr_line.array[5]);
+  } else {
+    return (Status_Info){true, "invalid calculation operator used"};
+  }
+  return (Status_Info){false};
+}
+
 Status_Info write_free(FILE *fp, Char_Slice curr_line) {
   if (curr_line.rows != 2) {
     return (Status_Info){true, "invalid FREE"};

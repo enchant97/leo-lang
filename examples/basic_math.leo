@@ -1,0 +1,5 @@
+VAR a INTEGER = 10
+VAR b INTEGER = 2
+VAR c INTEGER = 0
+
+CALC c = a + b

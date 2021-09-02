@@ -59,6 +59,9 @@ void compile_mode(char *src_path, char *dest_path) {
     case IN:
       curr_status = write_in(fp_dest, curr_line);
       break;
+    case CALC:
+      curr_status = write_calc(fp_dest, curr_line);
+      break;
     case FREE:
       curr_status = write_free(fp_dest, curr_line);
       break;
